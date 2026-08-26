@@ -43,6 +43,7 @@ test_h = 1087
 test_r = 300
 test_cm = 'CMYK'
 test_icc = 'Coated FOGRA39 (ISO 12647-2:2004)'
+test_gds = {(756, 0), (24556, 0), (756, 1), (34028, 1), (1890, 0), (23422, 0), (1890, 1), (32894, 1)}
 
 for arg in argv[1:]:
     for psdfile in glob(arg):
@@ -100,6 +101,13 @@ for arg in argv[1:]:
                 noerr = False
         else:
             err(noerr, f'В документе более одного слоя: {", ".join((layer.name for layer in psd))}')
+            noerr = False
+
+        guides = psd.image_resources.get_data(constants.Resource.GRID_AND_GUIDES_INFO)
+        if set(guides.data) == test_gds:
+            ok('Вылеты установлены правильно.')
+        else:
+            err(noerr, 'Вылеты установлены неправильно.')
             noerr = False
 
         allok(noerr)
