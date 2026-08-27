@@ -104,7 +104,7 @@ for arg in argv[1:]:
             noerr = False
 
         guides = psd.image_resources.get_data(constants.Resource.GRID_AND_GUIDES_INFO)
-        if set(guides.data) == test_gds:
+        if set(getattr(guides, 'data', {})) == test_gds:
             ok('Вылеты установлены правильно.')
         else:
             err(noerr, 'Вылеты установлены неправильно.')
